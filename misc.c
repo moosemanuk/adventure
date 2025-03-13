@@ -1,5 +1,7 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include "object.h"
+#include "misc.h"
 
 int listObjectsAtLocation(OBJECT* location)
 {
@@ -7,7 +9,7 @@ int listObjectsAtLocation(OBJECT* location)
 	OBJECT* obj;
 	for (obj = objs; obj < endOfObjs; obj++)
 	{
-		if (obj != player && obj->location == location)
+		if (obj != player && isHolding(location, obj))
 		{
 			if (count++ == 0)
 			{
@@ -25,7 +27,7 @@ OBJECT* actorHere(void)
 	OBJECT* obj;
 	for (obj = objs; obj < endOfObjs; obj++)
 	{
-		if (obj->location == player->location && obj == guard)
+		if (isHolding(player->location, obj) && obj == guard)
 		{
 			return obj;
 		}
@@ -47,4 +49,22 @@ OBJECT* getPassage(OBJECT* from, OBJECT* to)
 		}
 	}
 	return NULL;
+}
+
+bool isHolding(OBJECT* container, OBJECT* obj)
+{
+	return obj != NULL && obj->location == container;
+}
+
+DISTANCE getDistance(OBJECT* from, OBJECT* to)
+{
+	return to == NULL ? dUnknownObject :
+		to == from ? dSelf :
+		isHolding(from, to) ? dHeld :
+		isHolding(to, from) ? dLocation :
+		isHolding(from->location, to) ? dHere :
+		isHolding(from, to->location) ? dHeldContained :
+		isHolding(from->location, to->location) ? dHereContained :
+		getPassage(from->location, to) ? dOverThere :
+		dNotHere;
 }

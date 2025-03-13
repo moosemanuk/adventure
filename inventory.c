@@ -7,25 +7,33 @@
 void executeTake(const char* noun)
 {
 	OBJECT* obj = getVisible("what you want to get", noun);
-	if (obj == NULL)
+	switch(getDistance(player, obj))
 	{
-		// handled by getVisible
-	}
-	else if (obj == player)
-	{
+	case dSelf:
 		printf("You should not be doing that to yourself.\n");
-	}
-	else if (obj->location == player)
-	{
+		break;
+
+	case dHeld:
 		printf("You are aready carrying %s.\n", obj->description);
-	}
-	else if (obj->location == guard)
-	{
-		printf("You should ask %s nicely.\n", obj->location->description);
-	}
-	else
-	{
-		moveObject(obj, player);
+		break;
+
+	case dOverThere:
+		printf("Too far away, you need to move closer");
+		break;
+
+	case dUnknownObject:
+		// already handled by getVisible
+		break;
+
+	default:
+		if (obj->location == guard)
+		{
+			printf("You should ask %s nicely.\n", obj->location->description);
+		}
+		else
+		{
+			moveObject(obj, player);
+		}
 	}
 }
 	
