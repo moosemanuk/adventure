@@ -3,10 +3,10 @@
 
 typedef struct object
 {
-	const char* description;
-	const char* tag;
-	struct object* location;
-	struct object* destination;
+	const char*		description;
+	const char**	tags;
+	struct object*	location;
+	struct object*	destination;
 } OBJECT;
 
 extern OBJECT objs[];
