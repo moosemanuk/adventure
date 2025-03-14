@@ -39,6 +39,7 @@ void executeGo(const char* noun)
 	default:
 		if (obj->destination != NULL)
 		{
+			system("cls");
 			printf("OK.\n");
 			player->location = obj->destination;
 			executeLook("around");

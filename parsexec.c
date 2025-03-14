@@ -47,4 +47,5 @@ bool parseAndExecute(char* input)
 			printf("I don't know how to '%s'.\n", verb);
 		}
 	}
+	return true;
 }

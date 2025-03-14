@@ -3,6 +3,7 @@
 
 typedef struct object
 {
+	const char*		objectType;		// just for convenience in code, never used
 	const char*		description;
 	const char**	tags;
 	struct object*	location;
